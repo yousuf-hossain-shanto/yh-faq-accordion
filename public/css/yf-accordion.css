@@ -1,0 +1,56 @@
+.yf-accordion-section{
+	margin: 30px 0px 0px;
+}
+.yf-accordion-title {
+	cursor: pointer;
+}
+.yf-accordion-title h3{
+	margin: 0px;
+	font-size: 20px;
+	font-family: Roboto;
+}
+.yf-accordion-title h3 .icon-style {
+	width: 40px;
+	height: 40px;
+	text-align: center;
+	margin-right: 15px;
+	vertical-align: middle;
+	line-height: 1.9;
+	font-size: 20px;
+}
+.yf-accordion-title h3 .icon-style:before{
+	vertical-align: middle;
+}
+.arrow-style .yf-fa-up:before{
+	content: '\f104';
+	font-weight: bold;
+}
+.arrow-style .yf-fa-down:before {
+    content: '\f107';
+    font-weight: bold;
+}
+.plus-minus-style .yf-fa-up:before{
+	content: '\f067';
+}
+.plus-minus-style .yf-fa-down:before{
+	content: '\f068';
+}
+.yf-accordion-title h3 .yf-details {
+	font-size: 12px;
+	font-weight: normal;
+	color: #363636;
+}
+.yf-accordion-content{
+	display: none;
+	font-family: Railway;
+	font-size: 16px;
+}
+.yf-accordion-content {
+	padding: 15px 0px 15px 61px;
+}
+
+@media only screen and (max-width: 768px){
+	.yf-accordion-title h3 .yf-details {
+		display: none;
+	}
+}
