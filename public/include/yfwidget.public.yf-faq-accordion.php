@@ -16,10 +16,14 @@
 				'title_background' => '#fff',
 				'title_text' => '#000',
 				'group' => '',
+				'border' => '0',
+				'border_style' => 'solid',
+				'border_color' => '#ccc',
+				'icon_style' => 'plus-minus-style',
 				'icon_bg_color' => '#E50000',
 				'icon_color' => '#000',
 				'icon_bg_radius' => '0',
-				'show_icon_bg' => false,
+				'show_icon_bg' => '1',
 				'content_bg_color' => '#fff',
 				'content_text_color' => '#000'
 			);
@@ -41,6 +45,7 @@
 						parent.find('.yf-icon-color').wpColorPicker(<?php if(is_customize_preview()){ ?>{change:_.throttle(function(){$(this).trigger('change');}, 1000, {leading: false})}<?php } ?>);
 						parent.find('.yf-content-bg').wpColorPicker(<?php if(is_customize_preview()){ ?>{change:_.throttle(function(){$(this).trigger('change');}, 1000, {leading: false})}<?php } ?>);
 						parent.find('.yf-content-color').wpColorPicker(<?php if(is_customize_preview()){ ?>{change:_.throttle(function(){$(this).trigger('change');}, 1000, {leading: false})}<?php } ?>);
+						parent.find('.yf-border-color').wpColorPicker(<?php if(is_customize_preview()){ ?>{change:_.throttle(function(){$(this).trigger('change');}, 1000, {leading: false})}<?php } ?>);
 					});
 
 					jQuery(document).ajaxComplete(function(event, xhr, settings) {
@@ -50,6 +55,7 @@
 						parent.find('.yf-icon-color').wpColorPicker(<?php if(is_customize_preview()){ ?>{change:_.throttle(function(){$(this).trigger('change');}, 1000, {leading: false})}<?php } ?>);
 						parent.find('.yf-content-bg').wpColorPicker(<?php if(is_customize_preview()){ ?>{change:_.throttle(function(){$(this).trigger('change');}, 1000, {leading: false})}<?php } ?>);
 						parent.find('.yf-content-color').wpColorPicker(<?php if(is_customize_preview()){ ?>{change:_.throttle(function(){$(this).trigger('change');}, 1000, {leading: false})}<?php } ?>);
+						parent.find('.yf-border-color').wpColorPicker(<?php if(is_customize_preview()){ ?>{change:_.throttle(function(){$(this).trigger('change');}, 1000, {leading: false})}<?php } ?>);
 					});
 
 				})(jQuery);
@@ -82,8 +88,13 @@
 			?>
 			<div class="yf-accordion">
 				<?php while($yf_wid_accordion->have_posts()):$yf_wid_accordion->the_post() ?>
-					<div class="yf-accordion-section" style="border: 2px solid #ccc;">
-						<div class="yf-accordion-title arrow-style" rel="#id-<?php echo get_the_ID(); ?>">
+					<div class="yf-accordion-section" style="border: <?php echo $border; ?>px <?php echo  $border_style; ?> <?php echo $border_color; ?>;">
+					<style type="text/css">
+						#yf-id-<?php echo $this->number. '-' .get_the_ID(); ?> p{
+							color: <?php echo $content_text_color; ?>;
+						}
+					</style>
+						<div class="yf-accordion-title <?php echo $icon_style; ?>" rel="#yf-id-<?php echo get_the_ID(); ?>">
 							<h3 style="background: <?php echo $title_background; ?>;color: <?php echo $title_text; ?>">
 								<span class="<?php if($show_icon_bg===1){ ?>icon-style<?php } ?> fa yf-fa-up" <?php if($show_icon_bg===1){ ?>style="background: <?php echo $icon_bg_color; ?>;color: <?php echo $icon_color; ?>;border-radius: <?php echo $icon_bg_radius; ?>px;"<?php } ?>>
 								</span>
@@ -95,10 +106,8 @@
 								?>
 							</h3>
 						</div>
-						<div class="yf-accordion-content" style="background: <?php echo $content_bg_color; ?>;" id="id-<?php echo get_the_ID(); ?>">
-							<article>
+						<div class="yf-accordion-content" style="background: <?php echo $content_bg_color; ?>;" id="yf-id-<?php echo $this->number. '-' .get_the_ID(); ?>">
 								<?php the_content(); ?>
-							</article>
 						</div>
 					</div>
 				<?php endwhile; ?>
@@ -135,8 +144,48 @@
 				</p>
 
 			</div>
+			<h3><?php _e('Global Section', 'yf_textdomain'); ?></h3>
+			<div style="border-bottom: 1px solid #ccc;">
+				<p><label for="<?php echo $this->get_field_id('group') ; ?>"><?php _e( 'Group', 'yf_textdomain' ); ?>:</label></p>
+				<p>
+					<?php wp_dropdown_categories(array(
+						'show_option_none' => '',
+						'class' => 'widefat',
+						'id' => $this->get_field_id('group'),
+						'name' => $this->get_field_name('group'),
+						'selected' => $group,
+						'taxonomy' => 'faq_group',
+						'value_field' => 'slug'
+					)); ?>
+				</p>
+				<p>
+					<label for="<?php echo $this->get_field_id('border') ; ?>"><?php _e( 'Border', 'yf_textdomain' ); ?>:</label>
+					<input class="tiny-text" type="number" id="<?php echo $this->get_field_id('border') ; ?>" name="<?php echo $this->get_field_name('border') ; ?>" value="<?php echo $border; ?>">PX
+				</p>
+				<p>
+					<label for="<?php echo $this->get_field_id('border_style'); ?>"><?php _e('Bordesr Style', 'yf_textdomain'); ?></label>
+					<select id="<?php echo $this->get_field_id('border_style'); ?>" name="<?php echo $this->get_field_name('border_style'); ?>">
+						<option value="solid" <?php selected($border_style, 'solid'); ?>>Solid</option>
+						<option value="dashed" <?php selected($border_style, 'dashed'); ?>>Dashed</option>
+						<option value="dotted" <?php selected($border_style, 'dotted'); ?>>Dotted</option>
+					</select>
+				</p>
+				<p>
+					<label for="<?php echo $this->get_field_id('border_color') ; ?>"><?php _e( 'Border Color', 'yf_textdomain' ); ?>:</label>
+				</p>
+				<p>
+					<input type="text" class="yf-border-color" id="<?php echo $this->get_field_id('border_color') ; ?>" name="<?php echo $this->get_field_name('border_color') ; ?>" value="<?php echo $border_color; ?>">
+				</p>
+			</div>
 			<h3><?php _e('Icon Section', 'yf_textdomain'); ?></h3>
 			<div style="border-bottom: 1px solid #ccc;">
+				<p>
+					<label for="<?php echo $this->get_field_id('icon_style'); ?>"><?php _e('Icon Style', 'yf_textdomain'); ?></label>
+					<select id="<?php echo $this->get_field_id('icon_style'); ?>" name="<?php echo $this->get_field_name('icon_style'); ?>">
+						<option value="arrow-style" <?php selected($icon_style, 'arrow-style'); ?>>Arrow Style</option>
+						<option value="plus-minus-style" <?php selected($icon_style, 'plus-minus-style'); ?>>Plus Minus Style</option>
+					</select>
+				</p>
 				<p>
 					<label for="<?php echo $this->get_field_id('show_icon_bg'); ?>"><?php _e('Show Icon Background', 'yf_textdomain'); ?></label>
 					<input type="checkbox" <?php checked($show_icon_bg); ?> class="checkbox" name="<?php echo $this->get_field_name('show_icon_bg'); ?>" value="1" id="<?php echo $this->get_field_id('show_icon_bg'); ?>">
@@ -173,18 +222,6 @@
 					<input type="text" class="yf-content-color" id="<?php echo $this->get_field_id('content_text_color') ; ?>" name="<?php echo $this->get_field_name('content_text_color') ; ?>" value="<?php echo $content_text_color; ?>">
 				</p>
 			</div>
-			<p><label for="<?php echo $this->get_field_id('group') ; ?>"><?php _e( 'Group', 'yf_textdomain' ); ?>:</label></p>
-			<p>
-				<?php wp_dropdown_categories(array(
-					'show_option_none' => '',
-					'class' => 'widefat',
-					'id' => $this->get_field_id('group'),
-					'name' => $this->get_field_name('group'),
-					'selected' => $group,
-					'taxonomy' => 'faq_group',
-					'value_field' => 'slug'
-				)); ?>
-			</p>
 
 		<?php
 		}
@@ -195,6 +232,10 @@
 			$instance['title_background'] = $new_instance['title_background'];
 			$instance['title_text'] = $new_instance['title_text'];
 			$instance['group'] = $new_instance['group'];
+			$instance['border'] = $new_instance['border'];
+			$instance['border_style'] = $new_instance['border_style'];
+			$instance['border_color'] = $new_instance['border_color'];
+			$instance['icon_style'] = $new_instance['icon_style'];
 			$instance['icon_bg_color'] = $new_instance['icon_bg_color'];
 			$instance['icon_color'] = $new_instance['icon_color'];
 			$instance['icon_bg_radius'] = $new_instance['icon_bg_radius'];

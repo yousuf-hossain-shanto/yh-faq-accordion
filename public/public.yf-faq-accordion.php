@@ -10,7 +10,5 @@
 	function yf_register_color_picker(){
 		wp_enqueue_style( 'wp-color-picker' );
 		wp_enqueue_script( 'wp-color-picker' );
-		//wp_register_script( 'yf-widget', YF_PLUGIN_URL . 'public/js/yf-widget.js', array( 'jquery', 'wp-color-picker'), null, true );
-		//wp_enqueue_script( 'yf-widget' );
 	}
 ?>

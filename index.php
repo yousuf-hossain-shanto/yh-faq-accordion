@@ -1,2 +1,2 @@
 <?php
-	//slience is golden
+//silance is golden
